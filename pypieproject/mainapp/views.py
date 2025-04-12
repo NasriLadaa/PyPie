@@ -7,7 +7,7 @@ def index(request):
 
 def display_dashboard(request):
     context = {
-        'users' , models.get_users()
+        'users' : models.get_users()
     }
-    return render(request, 'dashboard', context)
+    return render(request, 'dashboard.html', context)
 
