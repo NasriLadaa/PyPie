@@ -6,6 +6,16 @@
     <title>Update Pie</title>
 </head>
 <body>
-    
+    <form action="updatepieform" method="post">
+        {% csrf_token %}
+        <label for="piename">Pie Name: </label>
+        <input type="text" name="firstname" id="firstname">
+
+
+        <input type="submit" value="Submit">
+
+    </form>
+
+    <a href="/dashboard">Back</a>
 </body>
 </html>

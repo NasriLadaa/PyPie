@@ -13,3 +13,6 @@ class User(models.Model):
 #This function will connection to DB and get all users in users table.
 def get_users():
     return User.objects.all()
+
+def create_user(post):
+    return User.objects.create( firstname = post['firstname'], lastname= post['lastname'] , phonenumber = post['phonenumber'], address = post['address'] )

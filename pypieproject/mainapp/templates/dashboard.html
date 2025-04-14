@@ -1,13 +1,30 @@
-
 {% extends "base.html" %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 
-{% for user in users %}
-<p>{{ user.firstname }}</p>
-<p>{{ user.created_at|date:"Y-m-d H:i" }}</p> 
-{% endfor %}
+<table>
+    <th>
+    <td>ID</td>
+    <td>Pie Name</td>
+    <td>Edit</td>
+    <td>View</td>
+    </th>
+    <tr>
+        {% for user in users %}
+        <td>{{ user.id }}</td>
+        <td>{{ user.created_at|date:"Y-m-d H:i" }}</td>
+        <td></td>
+        <td></td>
+        {% endfor %}
+    </tr>
+</table>
+
+
+<form action="logout" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Logout">
+</form>
 
 {% endblock %}
