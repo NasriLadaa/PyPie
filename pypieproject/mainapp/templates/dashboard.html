@@ -9,16 +9,18 @@
     <td>ID</td>
     <td>Pie Name</td>
     <td>Edit</td>
-    <td>View</td>
+
+    <td>Created Date</td>
     </th>
     <tr>
-        {% for user in users %}
-        <td>{{ user.id }}</td>
-        <td>{{ user.created_at|date:"Y-m-d H:i" }}</td>
-        <td></td>
-        <td></td>
-        {% endfor %}
+        {% for pie in pies %}
+        <td><a href="/viewpie/{{pie.id}}"> {{ pie.id }} </a></td>
+        <td><a href="/viewpie/{{pie.id}}"> {{ pie.piename }}</a></td>
+        <td><a href="/editpie/{{pie.id}}">Edit</a></td>
+        <td>{{ pie.created_at|date:"Y-m-d H:i" }}</td>
     </tr>
+        {% endfor %}
+    
 </table>
 
 

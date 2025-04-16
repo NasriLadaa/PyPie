@@ -1,21 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Pie</title>
-</head>
-<body>
-    <form action="updatepieform" method="post">
+
+{% extends "base.html" %}
+
+{% block title %}Show Pie{% endblock %}
+
+{% block content %}
+
+    <form action="/updatepieform" method="post">
         {% csrf_token %}
         <label for="piename">Pie Name: </label>
-        <input type="text" name="firstname" id="firstname">
+        <input type="text" name="piename" id="piename" value="{{ pie.piename }}">
 
+        <input type="hidden" name="pieid" value="{{ pie.id }}">
 
         <input type="submit" value="Submit">
 
     </form>
 
     <a href="/dashboard">Back</a>
-</body>
-</html>
+
+
+{% endblock %}

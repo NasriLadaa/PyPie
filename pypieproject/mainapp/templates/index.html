@@ -22,6 +22,19 @@
 
         <input type="submit" value="Submit">
     </form>
+
+    <hr>
+
+    <form action="loginuserform" method="post">
+        {% csrf_token %}
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="username">
+
+        <label for="password">Password: </label>
+        <input type="text" name="password" id="password">
+
+        <input type="submit" value="Login">
+    </form>
     
 </body>
 </html>

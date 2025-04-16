@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Pie</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Create Pie{% endblock %}
+
+{% block content %}
+
     <form action="createpieform" method="post">
         {% csrf_token %}
         <label for="piename">Pie Name: </label>
-        <input type="text" name="firstname" id="firstname">
+        <input type="text" name="piename" id="piename">
 
 
         <input type="submit" value="Submit">
@@ -17,5 +15,6 @@
     </form>
 
     <a href="/dashboard">Back</a>
-</body>
-</html>
+
+
+{% endblock %}
