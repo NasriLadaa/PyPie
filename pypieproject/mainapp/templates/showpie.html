@@ -7,4 +7,10 @@
     <p> {{ pie.piename }} </p>
     <a href="/dashboard">Back</a>
 
+    <form action="/vote_pie_form" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="pie_id" value="{{ pie.id }}">
+        <input type="submit" value="Delicious">
+    </form>
+
 {% endblock %}

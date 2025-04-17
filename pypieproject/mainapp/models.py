@@ -38,3 +38,8 @@ def update_pie(post):
     pie = Pie.objects.get( id  = post['pieid'] )
     pie.piename = post['piename']
     pie.save()
+
+def vote_pie( user_id , pie_id):
+    user = User.objects.get( id = user_id)
+    pie = Pie.objects.get( id = pie_id)
+    user.pies.add(pie)

@@ -88,3 +88,21 @@ def login_user_form(request):
         return redirect('/dashboard')
     else:
         return render(request, 'dashboard.html')   #it should be error page
+    
+
+def vote_pie_form(request):
+    if request.method == 'POST':
+        if  'user_id' in request.session:
+            user_id = request.session['user_id']
+            pie_id = request.POST['pie_id']
+            models.vote_pie( user_id ,  pie_id)
+            return redirect('/viewpie/'+pie_id)
+        else:
+            return redirect('/')
+    else:
+        context = {
+        'current_year': datetime.now().year
+        }
+        return render(request, 'dashboard.html', context)   #it should be error page
+    
+    
