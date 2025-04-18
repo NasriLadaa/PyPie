@@ -43,3 +43,20 @@ def vote_pie( user_id , pie_id):
     user = User.objects.get( id = user_id)
     pie = Pie.objects.get( id = pie_id)
     user.pies.add(pie)
+
+def unvote_pie( user_id , pie_id):
+    print("test")
+    user = User.objects.get( id = user_id)
+    pie = Pie.objects.get( id = pie_id)
+    pie.users.remove(user)
+    #user.pies.remove(pie)
+
+def check_vote(user_id , pie_id):
+    user = User.objects.get(id = user_id)
+    pie = Pie.objects.get( id = pie_id)
+    # or user.pies.filter(id=pie.id).exists()
+    if (pie.users.filter(id=user.id).exists()):
+        return True
+    else:
+        return False
+    

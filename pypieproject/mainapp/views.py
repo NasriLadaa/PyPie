@@ -49,7 +49,8 @@ def create_pie_form(request):
 def update_pie(request, id):
     if 'user_id' in request.session:
         context = {
-            'pie' : models.get_pie(id)
+            'pie' : models.get_pie(id),
+            'current_year': datetime.now().year
         }
         return render(request, 'updatepie.html' ,context)
     else:
@@ -74,13 +75,17 @@ def logout_form(request):
     
 def view_pie(request, id):
     if 'user_id' in request.session:
+        user_id = request.session['user_id'] 
         context = {
-            'pie' : models.get_pie(id)
+            'pie' : models.get_pie(id),
+            'is_vote' : models.check_vote(user_id , id),
+            'current_year': datetime.now().year
         }
         return render(request, 'showpie.html' ,context)
     else:
         return redirect('/')
-    
+
+# Todo : still under implementation 
 def login_user_form(request):
     if request.method == 'POST':
         #bcrypt
@@ -95,8 +100,13 @@ def vote_pie_form(request):
         if  'user_id' in request.session:
             user_id = request.session['user_id']
             pie_id = request.POST['pie_id']
-            models.vote_pie( user_id ,  pie_id)
-            return redirect('/viewpie/'+pie_id)
+            form_type = request.POST['form_type']
+            if ( form_type == 'yakee'):
+                models.unvote_pie( user_id ,  pie_id)
+                return redirect('/viewpie/'+pie_id)
+            else: #Delicious
+                models.vote_pie( user_id ,  pie_id)
+                return redirect('/viewpie/'+pie_id)
         else:
             return redirect('/')
     else:

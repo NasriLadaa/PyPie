@@ -12,5 +12,6 @@ urlpatterns = [
     path('updatepieform' , views.update_pie_form),   
     path('loginuserform' , views.login_user_form), 
     path('vote_pie_form' , views.vote_pie_form)  ,
-    path('logout' , views.logout_form)
+    path('logout' , views.logout_form),
+
     ]
