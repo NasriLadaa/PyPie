@@ -5,7 +5,7 @@ class User(models.Model):
     firstname = models.CharField(max_length=25)
     lastname = models.CharField(max_length=25)
     phonenumber = models.CharField(max_length=10)
-    address = models.TextField()
+    #address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #pies
@@ -14,6 +14,16 @@ class User(models.Model):
 class Pie(models.Model):
     piename = models.CharField(max_length=25)
     users = models.ManyToManyField(User , related_name="pies")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+#Address model class
+class Address(models.Model):
+    country = models.CharField(max_length=25)
+    state = models.CharField(max_length=40)
+    city = models.CharField(max_length=25)
+    street= models.CharField(max_length=50)
+    user = models.ForeignKey(User, related_name="address" , on_delete= models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
