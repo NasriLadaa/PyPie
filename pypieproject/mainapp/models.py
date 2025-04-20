@@ -69,4 +69,7 @@ def check_vote(user_id , pie_id):
         return True
     else:
         return False
-    
+
+
+def login_user(post):
+    return 1

@@ -33,7 +33,7 @@ def create_user_form(request):
         request.session['user_id'] = new_user.id
         return redirect('/dashboard')
     else:
-        return render(request, 'dashboard.html')
+        return render(request, 'index.html')
 
 
 def create_pie_form(request):
@@ -123,4 +123,10 @@ def show_votes(request):
     else:
         return redirect('/')    
     
-    
+def login(request):
+    if request.method == 'POST':
+        user = models.login_user(request.POST)
+        request.session['user_id'] = user.id
+        return redirect('/dashboard')
+    else:
+        return render(request, 'index.html')
