@@ -5,7 +5,7 @@ class User(models.Model):
     firstname = models.CharField(max_length=25)
     lastname = models.CharField(max_length=25)
     phonenumber = models.CharField(max_length=10)
-    #address = models.TextField()
+    email = models.CharField(max_length=45)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #pies
@@ -14,6 +14,8 @@ class User(models.Model):
 class Pie(models.Model):
     piename = models.CharField(max_length=25)
     users = models.ManyToManyField(User , related_name="pies")
+    filling =  models.CharField(max_length=25, default='Cheese')
+    crust =  models.CharField(max_length=25, default='Vanilla')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -33,10 +35,10 @@ def get_users():
     return User.objects.all()
 
 def create_user(post):
-    return User.objects.create( firstname = post['firstname'], lastname= post['lastname'] , phonenumber = post['phonenumber'], address = post['address'] )
+    return User.objects.create( firstname = post['firstname'], lastname= post['lastname'] , phonenumber = post['phonenumber'])
 
 def create_pie(post):
-    Pie.objects.create( piename = post['piename']  )
+    Pie.objects.create( piename = post['piename'] , filling = post['filling'], crust= post['crust']  )
 
 def get_pies():
     return Pie.objects.all()
@@ -47,6 +49,8 @@ def get_pie(id):
 def update_pie(post):
     pie = Pie.objects.get( id  = post['pieid'] )
     pie.piename = post['piename']
+    pie.filling = post['filling']
+    pie.crust = post['crust']
     pie.save()
 
 def vote_pie( user_id , pie_id):

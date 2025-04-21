@@ -88,11 +88,11 @@ def view_pie(request, id):
 # Todo : still under implementation 
 def login_user_form(request):
     if request.method == 'POST':
-        #bcrypt
-        request.session['user_id'] = 1
+        user = models.login_user(request.POST)
+        request.session['user_id'] = user.id
         return redirect('/dashboard')
     else:
-        return render(request, 'dashboard.html')   #it should be error page
+        return render(request, 'index.html')     #it should be error page
     
 def vote_pie_form(request):
     if request.method == 'POST':
@@ -123,10 +123,3 @@ def show_votes(request):
     else:
         return redirect('/')    
     
-def login(request):
-    if request.method == 'POST':
-        user = models.login_user(request.POST)
-        request.session['user_id'] = user.id
-        return redirect('/dashboard')
-    else:
-        return render(request, 'index.html')
