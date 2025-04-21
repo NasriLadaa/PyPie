@@ -35,11 +35,10 @@ def create_user_form(request):
     else:
         return render(request, 'index.html')
 
-
 def create_pie_form(request):
     if request.method == 'POST':
         if  'user_id' in request.session:
-            models.create_pie(request.POST)
+            models.create_pie(request)
             return redirect('/dashboard')
         else:
             return redirect('/')
@@ -125,3 +124,12 @@ def show_votes(request):
     else:
         return redirect('/')    
     
+def view_user(request):
+    if 'user_id' in request.session:
+        context = {
+            'user' : models.get_user(request.session['user_id']),
+            'current_year': datetime.now().year
+        }
+        return render(request, 'viewuser.html' ,context)
+    else:
+        return redirect('/')        

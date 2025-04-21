@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Show Pie{% endblock %}
+
+{% block content %}
+
+<section>
+    <p> {{ user.firstname }}</p>
+    <p> {{ user.lastname }}</p>
+    <p> {% for address in user.address.all %}</p>
+    <p> {{ address }}</p>
+    {% endfor %}
+</section>
+
+{% endblock %}

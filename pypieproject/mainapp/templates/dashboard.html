@@ -9,8 +9,9 @@
     <td>ID</td>
     <td>Pie Name</td>
     <td>Edit</td>
-
     <td>Created Date</td>
+
+    <td>Created By</td>
     </th>
     <tr>
         {% for pie in pies %}
@@ -18,6 +19,7 @@
         <td><a href="/viewpie/{{pie.id}}"> {{ pie.piename }}</a></td>
         <td><a href="/editpie/{{pie.id}}">Edit</a></td>
         <td>{{ pie.created_at|date:"Y-m-d H:i" }}</td>
+        <td>{{ pie.created_by.firstname  }}</td>
     </tr>
         {% endfor %}
     

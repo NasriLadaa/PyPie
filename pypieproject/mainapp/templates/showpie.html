@@ -7,23 +7,21 @@
 <p> {{ pie.piename }} </p>
 <p> {{ pie.filling }} </p>
 <p> {{ pie.crust }} </p>
-<a href="/dashboard">Back</a>
 
-{% if is_vote %}
+
+
 <form action="/vote_pie_form" method="post">
     {% csrf_token %}
     <input type="hidden" name="pie_id" value="{{ pie.id }}">
+    {% if is_vote %}
     <input type="hidden" name="form_type" value="yakee">
     <input type="submit" value="Yakee!">
-</form>
-{% else %}
-<form action="/vote_pie_form" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="pie_id" value="{{ pie.id }}">
+    {% else %}
     <input type="hidden" name="form_type" value="Delicious">
     <input type="submit" value="Delicious!">
+    {% endif %}
 </form>
-{% endif %}
+
 
 
 

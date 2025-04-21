@@ -11,6 +11,8 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #pies
+    #address
+    #mypie
 
 #Pie model class
 class Pie(models.Model):
@@ -18,6 +20,7 @@ class Pie(models.Model):
     users = models.ManyToManyField(User , related_name="pies")
     filling =  models.CharField(max_length=25, default='Cheese')
     crust =  models.CharField(max_length=25, default='Vanilla')
+    created_by = models.ForeignKey(User, related_name="mypie", default=1,on_delete = models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -36,13 +39,18 @@ class Address(models.Model):
 def get_users():
     return User.objects.all()
 
+def get_user(id):
+    return User.objects.get(id = id)
+
 def create_user(post):
     user_password = post['password']
     hash1 = bcrypt.hashpw(user_password.encode(), bcrypt.gensalt()).decode()
     return User.objects.create( firstname = post['firstname'], lastname= post['lastname'] , phonenumber = post['phonenumber'], email =  post['email'], password = hash1)
 
 def create_pie(post):
-    Pie.objects.create( piename = post['piename'] , filling = post['filling'], crust= post['crust']  )
+    id = post.session['user_id'] 
+    user = User.objects.get( id = id )
+    Pie.objects.create( piename = post.POST['piename'] , filling = post.POST['filling'], crust= post.POST['crust'], created_by = user   )
 
 def get_pies():
     return Pie.objects.all()
