@@ -14,6 +14,7 @@ urlpatterns = [
     path('vote_pie_form' , views.vote_pie_form)  ,
     path('showvotes' , views.show_votes)  ,
     path('viewuser' , views.view_user)  ,
+    path('delete_pie_form', views.delete_pie_form ),
     path('logout' , views.logout_form),
 
     ]

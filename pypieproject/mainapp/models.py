@@ -100,3 +100,6 @@ def login_user(post):
     else:
         return False      
     
+def delete_pie(pie_id):
+    pie = Pie.objects.get( id = pie_id)
+    pie.delete()

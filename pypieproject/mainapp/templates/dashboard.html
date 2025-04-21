@@ -8,21 +8,39 @@
     <th>
     <td>ID</td>
     <td>Pie Name</td>
-    <td>Edit</td>
+    <td>Actions</td>
     <td>Created Date</td>
-
     <td>Created By</td>
     </th>
+
+    {% for pie in pies %}
     <tr>
-        {% for pie in pies %}
         <td><a href="/viewpie/{{pie.id}}"> {{ pie.id }} </a></td>
         <td><a href="/viewpie/{{pie.id}}"> {{ pie.piename }}</a></td>
-        <td><a href="/editpie/{{pie.id}}">Edit</a></td>
+        {% if pie.created_by.id == request.session.user_id %}
+        <td><a href="/editpie/{{pie.id}}">Edit</a>
+            <form action="/delete_pie_form" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="pieid" value="{{ pie.id }}">
+                <input type="hidden" name="userid" value=" {{ pie.created_by.id }}">
+               
+                <input type="submit" value="Delete">
+            </form>
+        </td>
+        {% else %}
+        <td><a href="/viewpie/{{pie.id}}"> View </a> </td>
+        {% endif %}
         <td>{{ pie.created_at|date:"Y-m-d H:i" }}</td>
-        <td>{{ pie.created_by.firstname  }}</td>
+        <td>{{ pie.created_by.firstname }}</td>
     </tr>
-        {% endfor %}
-    
+    {% empty %}
+
+
+    <tr>
+        <td colspan="5">No pies found.</td>
+    </tr>
+    {% endfor %}
+
 </table>
 
 

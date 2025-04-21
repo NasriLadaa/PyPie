@@ -133,3 +133,21 @@ def view_user(request):
         return render(request, 'viewuser.html' ,context)
     else:
         return redirect('/')        
+    
+def delete_pie_form(request):
+    if request.method == 'POST':
+        if  'user_id' in request.session:
+            pie_id = request.POST['pieid']
+            user_id = request.POST['userid']
+            if request.session['user_id'] == int(user_id):
+                models.delete_pie(pie_id)
+                return redirect('/dashboard')
+            else:
+                print("test")
+                return render(request, 'index.html')
+        else:
+            return redirect('/')
+    else:
+        return render(request, 'index.html')   
+
+
