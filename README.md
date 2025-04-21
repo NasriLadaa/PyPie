@@ -6,7 +6,7 @@
 
 
 ## Features
-- User authentication and Authorization (Sign up, Login)
+- User authentication and Authorization using bcrypt (Sign up, Login)
 - Responsive design for a smooth user experience
 
 ## Technologies & Tools
