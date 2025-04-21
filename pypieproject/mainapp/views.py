@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from . import models
 from datetime import datetime
+from django.contrib import messages
 
 def index(request):
     context = {
@@ -29,21 +30,35 @@ def create_pie(request):
 
 def create_user_form(request):
     if request.method == 'POST':
-        new_user = models.create_user(request.POST)
-        request.session['user_id'] = new_user.id
-        return redirect('/dashboard')
+        errors = models.User.objects.basic_validator_reg(request.POST)
+        if len(errors) > 0:
+            for key, value in errors.items():
+                messages.error(request, value)
+            print("Errors") 
+            return redirect('/')    
+        else:
+            new_user = models.create_user(request.POST)
+            request.session['user_id'] = new_user.id
+            return redirect('/dashboard')
     else:
         return render(request, 'index.html')
 
 def create_pie_form(request):
     if request.method == 'POST':
         if  'user_id' in request.session:
-            models.create_pie(request)
-            return redirect('/dashboard')
-        else:
+            errors = models.Pie.objects.basic_validator_save_Pie(request.POST)
+            if len(errors) > 0:
+                for key, value in errors.items():
+                    messages.error(request, value)
+                print("Errors") 
+                return redirect('/createpie')  
+            else:  
+                models.create_pie(request)
+                return redirect('/dashboard')
+        else: 
             return redirect('/')
     else:
-        return render(request, 'dashboard.html')
+        return render(request, 'index.html')
 
 def update_pie(request, id):
     if 'user_id' in request.session:
@@ -58,12 +73,19 @@ def update_pie(request, id):
 def update_pie_form(request):
     if request.method == 'POST':
         if  'user_id' in request.session:
-            models.update_pie(request.POST)
-            return redirect('/dashboard')
+            errors = models.Pie.objects.basic_validator_save_Pie(request.POST)
+            if len(errors) > 0:
+                for key, value in errors.items():
+                    messages.error(request, value)
+                print("Errors") 
+                return redirect('/editpie/'+request.POST['pieid'])    
+            else:
+                models.update_pie(request.POST)
+                return redirect('/dashboard')    
         else:
             return redirect('/')
     else:
-        return render(request, 'dashboard.html')    
+        return render(request, 'index.html')    
 
 def logout_form(request):
     if 'user_id' in request.session:
@@ -84,14 +106,21 @@ def view_pie(request, id):
     else:
         return redirect('/')
 
-# Todo : still under implementation 
+# Todo : Ready
 def login_user_form(request):
     if request.method == 'POST':
-        user = models.login_user(request)
-        if (user):
-            return redirect('/dashboard')
-        else:
-            return render(request, 'index.html')
+            errors = models.User.objects.basic_validator_login(request.POST)
+            if len(errors) > 0:
+                for key, value in errors.items():
+                    messages.error(request, value)
+                    print("Errors") 
+                    return redirect('/')  
+            else:
+                user = models.login_user(request)
+                if (user):
+                    return redirect('/dashboard')
+                else:
+                    return render(request, 'index.html')
     else:
         return render(request, 'index.html')     #it should be error page
     
@@ -118,6 +147,7 @@ def vote_pie_form(request):
 def show_votes(request):
     if 'user_id' in request.session:
         context = {
+            'pies' : models.vote_count(),
             'current_year': datetime.now().year
         }
         return render(request, 'votes.html' ,context)

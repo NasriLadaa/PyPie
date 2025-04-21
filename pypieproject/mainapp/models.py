@@ -1,5 +1,69 @@
 from django.db import models
+from django.db.models import Count
 import bcrypt
+import re
+
+class UserManager(models.Manager):
+    def basic_validator_login(self, postData):
+        errors = {}
+        user = User.objects.filter(email = postData['email'])
+        # add keys and values to errors dictionary for each invalid field
+        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        if not EMAIL_REGEX.match(postData['email']):
+            errors['email'] = "Wrong email address!"
+        if len(postData['password']) < 8:
+            errors["password"] = "Password should be at least 8 characters"    
+        if len(postData['email']) == 0 :   
+            errors["emailrequired"] = "Email is required!"  
+        if len(postData['password']) == 0 :   
+            errors["passwordrequired"] = "Password is required!"    
+        #if len(user) and not bcrypt.checkpw(postData['password'].encode(), user[0].password.encode()):
+        #    errors["passwordwronge"] = "Password or email does not exist!"   
+        if not len(user):
+            errors['emailnewuser'] = "Email is not registered" 
+        return errors
+
+    def basic_validator_reg(self, postData):
+        errors = {}
+        new_user = User.objects.filter(email = postData['email'])
+        # add keys and values to errors dictionary for each invalid field       
+        if len(postData['password']) < 8:
+            errors["password"] = "Password should be at least 8 characters"  
+        if len(postData['confirmpassword']) < 8:
+            errors["confirmpassword"] = "Confirm Password should be at least 8 characters" 
+        if len(postData['lastname']) < 3:
+            errors["lastname"] = "Last name should be at least 3 characters" 
+        if len(postData['firstname']) < 3:
+            errors["firstname"] = "First Name should be at least 3 characters" 
+        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        if not EMAIL_REGEX.match(postData['email']):
+            errors['email'] = "Wrong email address!"
+        if postData['password'] != postData['confirmpassword']:
+            errors['password_confirm'] = "Password Dosent Match!"
+        if len(postData['email']) == 0 :   
+            errors["emailrequired"] = "Email is required!"  
+        if len(postData['password']) == 0 :   
+            errors["passwordrequired"] = "Password is required!"
+        if len(postData['confirmpassword']) == 0 :   
+            errors["confirmpasswordrequired"] = "Confrim password is required!"
+        if len(postData['lastname']) == 0 :   
+            errors["lastnamerequired"] = "Last name is required!"
+        if len(postData['firstname']) == 0 :   
+            errors["firstnamerequired"] = "First name is required!"   
+        if len(new_user):
+            errors['emailnewuser'] = "Email already exist" 
+        return errors
+
+class PieManager(models.Manager):
+    def basic_validator_save_Pie(self, postData):
+        errors = {}
+        if len(postData['piename']) == 0 :   
+            errors["piename"] = "Pie name is required!"  
+        if len(postData['filling']) == 0 :   
+            errors["piefilling"] = "Pie filling is required!" 
+        if len(postData['crust']) == 0 :   
+            errors["piecrust"] = "Pie crust is required!"  
+        return errors
 
 #User model class
 class User(models.Model):
@@ -13,6 +77,7 @@ class User(models.Model):
     #pies
     #address
     #mypie
+    objects = UserManager() 
 
 #Pie model class
 class Pie(models.Model):
@@ -23,6 +88,7 @@ class Pie(models.Model):
     created_by = models.ForeignKey(User, related_name="mypie", default=1,on_delete = models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = PieManager() 
 
 #Address model class
 class Address(models.Model):
@@ -103,3 +169,6 @@ def login_user(post):
 def delete_pie(pie_id):
     pie = Pie.objects.get( id = pie_id)
     pie.delete()
+
+def vote_count():
+    return Pie.objects.annotate(num_votes=Count('users')).order_by('-num_votes')

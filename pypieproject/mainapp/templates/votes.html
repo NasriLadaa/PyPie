@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Show Pie{% endblock %}
@@ -6,5 +5,22 @@
 {% block content %}
 
 <p>Votes</p>
+
+<table>
+    <tr>
+    <th>Pie Name:</th>
+    <th># of Votes</th>
+    </tr>
+
+    {% for pie in pies %}
+    <tr>
+        <td> <a href="/viewpie/{{pie.id}}"> {{ pie.piename }} </a></td>
+        <td>{{ pie.num_votes }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
 
 {% endblock %}

@@ -26,6 +26,9 @@
         <label for="password">Password: </label>
         <input type="password" name="password" id="password">
 
+        <label for="confirmpassword">Confrim Password: </label>
+        <input type="password" name="confirmpassword" id="confirmpassword">
+
         <input type="submit" value="Sign Up">
     </form>
 
@@ -42,6 +45,14 @@
         <input type="submit" value="Login">
     </form>
     
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
 </body>
 </html>

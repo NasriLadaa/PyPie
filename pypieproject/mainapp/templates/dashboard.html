@@ -23,7 +23,6 @@
                 {% csrf_token %}
                 <input type="hidden" name="pieid" value="{{ pie.id }}">
                 <input type="hidden" name="userid" value=" {{ pie.created_by.id }}">
-               
                 <input type="submit" value="Delete">
             </form>
         </td>
