@@ -7,7 +7,7 @@ class User(models.Model):
     lastname = models.CharField(max_length=25)
     phonenumber = models.CharField(max_length=10)
     email = models.CharField(max_length=45)
-    password = models.CharField(max_length=45)
+    password = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #pies
@@ -37,7 +37,9 @@ def get_users():
     return User.objects.all()
 
 def create_user(post):
-    return User.objects.create( firstname = post['firstname'], lastname= post['lastname'] , phonenumber = post['phonenumber'], email =  post['email'], password = post['password'])
+    user_password = post['password']
+    hash1 = bcrypt.hashpw(user_password.encode(), bcrypt.gensalt()).decode()
+    return User.objects.create( firstname = post['firstname'], lastname= post['lastname'] , phonenumber = post['phonenumber'], email =  post['email'], password = hash1)
 
 def create_pie(post):
     Pie.objects.create( piename = post['piename'] , filling = post['filling'], crust= post['crust']  )
@@ -75,7 +77,6 @@ def check_vote(user_id , pie_id):
         return True
     else:
         return False
-
 
 def login_user(post):
     user_exist = User.objects.filter(email=post.POST['email'])
