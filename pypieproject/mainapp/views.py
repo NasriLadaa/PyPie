@@ -88,9 +88,11 @@ def view_pie(request, id):
 # Todo : still under implementation 
 def login_user_form(request):
     if request.method == 'POST':
-        user = models.login_user(request.POST)
-        request.session['user_id'] = user.id
-        return redirect('/dashboard')
+        user = models.login_user(request)
+        if (user):
+            return redirect('/dashboard')
+        else:
+            return render(request, 'index.html')
     else:
         return render(request, 'index.html')     #it should be error page
     
