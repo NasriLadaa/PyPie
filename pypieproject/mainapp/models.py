@@ -170,5 +170,7 @@ def delete_pie(pie_id):
     pie = Pie.objects.get( id = pie_id)
     pie.delete()
 
+#This method will get all associated records in the intermediary table between User and Pie and 
+# return the count of votes for each pie in a descending order
 def vote_count():
     return Pie.objects.annotate(num_votes=Count('users')).order_by('-num_votes')
