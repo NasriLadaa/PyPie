@@ -2,8 +2,8 @@
 
 # Project Name: PyPie
 
-## What is PyPie? Django framework project
-
+## What is PyPie? 
+Django framework project 
 
 ## Features
 - User authentication and Authorization using bcrypt (Sign up, Login)
@@ -19,7 +19,7 @@
 
 ### Technologies
 - Backend:
-   
+   - Django framework
 
 - Frontend Technologies:
     - JavaScript
